@@ -656,9 +656,7 @@ function Sparse{Tv<:VTypes,Ti<:ITypes}(m::Integer, n::Integer, colptr::Vector{Ti
     o = Sparse(m, n, colptr, rowval, nzval, 0)
 
     # check if array is symmetric and change stype if it is
-    i = symmetry(o, 0)[1] # Check for Hermitianity
-    if (isreal(nzval) && (i == MM_SYMMETRIC || i == MM_SYMMETRIC_POSDIAG)) || # real case
-        (i == MM_HERMITIAN || i == MM_HERMITIAN_POSDIAG) # complex case
+    if ishermitian(o)
         change_stype!(o, -1)
     end
     o
@@ -682,9 +680,7 @@ end
 function Sparse{Tv<:VTypes,Ti<:ITypes}(A::SparseMatrixCSC{Tv,Ti})
     o = Sparse(A, 0)
     # check if array is symmetric and change stype if it is
-    i = symmetry(o, 0)[1] # Check for Hermitianity
-    if (isreal(A) && (i == MM_SYMMETRIC || i == MM_SYMMETRIC_POSDIAG)) || # real case
-        (i == MM_HERMITIAN || i == MM_HERMITIAN_POSDIAG) # complex case
+    if ishermitian(o)
         change_stype!(o, -1)
     end
     o
